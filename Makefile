@@ -1,8 +1,11 @@
-dev: 
-	npm run dev
-
-build: 
+clean:
+	npm run clean
+	
+build: clean
 	npm run build
 
-run: build
+dev: build
+	npm run dev
+
+start: build
 	npm run start
