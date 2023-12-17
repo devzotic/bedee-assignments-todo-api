@@ -105,11 +105,11 @@ export class TodoController {
       const completedFilter = req.query.completed as string
       todos = this.filterByCompleted(todos, completedFilter)
 
+      const sortBy = req.query.sortBy as string
+      const sortOrder = req.query.sortOrder as string
+      todos = this.sort(todos, sortBy, sortOrder)
+
       var result = Paginate(req, todos)
-      // result.todos = todos.slice(
-      //   req.pagination.startIndex,
-      //   req.pagination.endIndex
-      // )
 
       return res.status(200).send({
         success: true,
@@ -153,5 +153,30 @@ export class TodoController {
       return todos.filter((todo) => todo.completed === isCompleted)
     }
     return todos
+  }
+
+  private sort(
+    todos: Todo[],
+    sortBy: string = "createdAt",
+    sortOrder: string = "asc"
+  ): Todo[] {
+    switch (sortBy) {
+      case "text":
+        return todos.sort((a, b) =>
+          sortOrder === "desc"
+            ? b.text.localeCompare(a.text)
+            : a.text.localeCompare(b.text)
+        )
+      case "createdAt":
+        return todos.sort((a, b) =>
+          sortOrder === "desc"
+            ? b.createdAt.getTime() - a.createdAt.getTime()
+            : a.createdAt.getTime() - b.createdAt.getTime()
+        )
+      // Add more sorting options if needed
+      default:
+        // Do nothing for unknown sortBy values
+        return todos
+    }
   }
 }
