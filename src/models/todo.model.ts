@@ -9,12 +9,16 @@ export interface Todo {
 export class TodoModel {
   private todos: Todo[] = []
 
+  getTotalCount() {
+    return this.todos.length
+  }
+
   findOne(id: number): Todo | undefined {
     return this.todos.find((todo) => todo.id === id)
   }
 
-  findAll(): Todo[] {
-    return this.todos
+  findAll(startIndex: number, endIndex: number): Todo[] {
+    return this.todos.slice(startIndex, endIndex)
   }
 
   create(text: string, completed: boolean = false) {

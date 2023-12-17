@@ -5,6 +5,7 @@ import {
   updateTodoSchemaHandler,
   updateTodoStatusSchemaHandler,
 } from "../middlewares/validation.middleware"
+import { paginationMiddleware } from "../middlewares/pagination.middleware"
 
 export class TodoRoutes {
   private router: Router
@@ -37,7 +38,7 @@ export class TodoRoutes {
       this.todoController.createTodo(req, res)
     })
 
-    this.router.get("/todos", (req, res) =>
+    this.router.get("/todos", paginationMiddleware(), (req, res) =>
       this.todoController.getAllTodos(req, res)
     )
 

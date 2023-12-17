@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { TodoModel, Todo } from "../models/todo.model"
-import Joi from "joi"
+import { Paginate } from "./controller"
 
 export class TodoController {
   private todoModel: TodoModel
@@ -100,10 +100,17 @@ export class TodoController {
 
   getAllTodos(req: Request, res: Response) {
     try {
-      const todos: Todo[] = this.todoModel.findAll()
-      return res.send({
+      const { startIndex, endIndex } = req.pagination
+      const todos: Todo[] = this.todoModel.findAll(startIndex, endIndex)
+
+      const totalCount = this.todoModel.getTotalCount()
+
+      var result = Paginate(req, totalCount)
+      result.todos = todos
+
+      return res.status(200).send({
         success: true,
-        data: todos,
+        data: result,
       })
     } catch (e) {
       return res.status(500).send({
