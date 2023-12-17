@@ -4,11 +4,9 @@ export interface PaginationResult {
   [key: string]: any
 }
 
-export const Paginate = (
-  req: Request,
-  totalCount: number
-): PaginationResult => {
+export const Paginate = (req: Request, arr: any[]): PaginationResult => {
   const { page, limit, startIndex, endIndex } = req.pagination
+  const totalCount = arr.length
 
   const totalPage = Math.ceil(totalCount / limit)
 
@@ -31,6 +29,8 @@ export const Paginate = (
       limit,
     }
   }
+
+  result.data = arr.slice(startIndex, endIndex)
 
   return result
 }

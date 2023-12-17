@@ -17,8 +17,8 @@ export class TodoModel {
     return this.todos.find((todo) => todo.id === id)
   }
 
-  findAll(startIndex: number, endIndex: number): Todo[] {
-    return this.todos.slice(startIndex, endIndex)
+  findAll(): Todo[] {
+    return this.todos
   }
 
   create(text: string, completed: boolean = false) {

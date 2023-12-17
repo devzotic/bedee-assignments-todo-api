@@ -100,13 +100,16 @@ export class TodoController {
 
   getAllTodos(req: Request, res: Response) {
     try {
-      const { startIndex, endIndex } = req.pagination
-      const todos: Todo[] = this.todoModel.findAll(startIndex, endIndex)
+      let todos: Todo[] = this.todoModel.findAll()
 
-      const totalCount = this.todoModel.getTotalCount()
+      const completedFilter = req.query.completed as string
+      todos = this.filterByCompleted(todos, completedFilter)
 
-      var result = Paginate(req, totalCount)
-      result.todos = todos
+      var result = Paginate(req, todos)
+      // result.todos = todos.slice(
+      //   req.pagination.startIndex,
+      //   req.pagination.endIndex
+      // )
 
       return res.status(200).send({
         success: true,
@@ -142,5 +145,13 @@ export class TodoController {
         data: { error: "Internal Server Error" },
       })
     }
+  }
+
+  private filterByCompleted(todos: Todo[], completedFilter: string): Todo[] {
+    if (completedFilter === "true" || completedFilter === "false") {
+      const isCompleted = completedFilter === "true"
+      return todos.filter((todo) => todo.completed === isCompleted)
+    }
+    return todos
   }
 }
