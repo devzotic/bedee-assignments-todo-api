@@ -16,10 +16,10 @@ npm run build
 npm run start
 ```
 
-### API spec
+### [API spec spec](https://documenter.getpostman.com/view/767539/2s9Ykn9hJD)
 
 ```
 https://documenter.getpostman.com/view/767539/2s9Ykn9hJD
-
-** app run on port: 4000
 ```
+
+\*\*\*app run on port: 4000
